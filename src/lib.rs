@@ -44,15 +44,15 @@ impl Drop for GuiContext {
 
 /// Acts as an intermediary between [`ggez`] and [`egui`]
 /// ```
-/// use ggegui::{egui, Gui};
+/// use ggegui::{egui, EguiBackend};
 /// struct State {
-///     gui: Gui,
+///     gui: EguiBackend,
 /// }
 ///
 /// impl State {
 ///     pub fn new(ctx: &mut Context) -> Self {
 ///         Self {
-///             gui: Gui::new(ctx),
+///             gui: EguiBackend::new(ctx),
 ///         }
 ///     }
 /// }
@@ -82,14 +82,14 @@ impl Drop for GuiContext {
 /// }
 /// ```
 #[derive(Default)]
-pub struct Gui {
+pub struct EguiBackend {
 	context: egui::Context,
 	pub input: Input,
 	painter: Arc<Mutex<Painter>>,
 }
 
-impl Gui {
-	/// Create a [`Gui`] with extra information for use the [`Input::set_scale_factor`]
+impl EguiBackend {
+	/// Create a [`EguiBackend`] with extra information for use the [`Input::set_scale_factor`]
 	pub fn new(ctx: &ggez::Context) -> Self {
 		let mut input = Input::default();
 		let (w, h) = ctx.gfx.size();
@@ -119,7 +119,7 @@ impl Gui {
 	}
 }
 
-impl Drawable for Gui {
+impl Drawable for EguiBackend {
 	fn draw(&self, canvas: &mut Canvas, _param: impl Into<DrawParam>) {
 		self.painter
 			.lock()
