@@ -13,7 +13,10 @@ pub struct Painter {
 impl Painter {
 	pub fn draw(&mut self, canvas: &mut graphics::Canvas, scale_factor: f32) {
 		for (id, mesh, clip) in self.paint_jobs.iter() {
-			canvas.set_scissor_rect(*clip).unwrap();
+			if let Err(e) = canvas.set_scissor_rect(*clip) {
+				log::error!("Failed to set textureId: {id:?} with mesh: {mesh:?} with clip: {clip:?} due to: {e}");
+				continue;
+			}
 			canvas.draw_textured_mesh(
 				mesh.clone(),
 				self.textures[id].clone(),
